@@ -14,11 +14,14 @@ app.use(cors({
 }));
 
 
+app.use(express.urlencoded({
+    extended:true
+}));
 app.use(express.json());
 
 
 
-app.use("/product",productRouter)
+app.use("/api/v1/product",productRouter)
 
 app.use((err,req,res,next)=> {
     console.log(err.message);

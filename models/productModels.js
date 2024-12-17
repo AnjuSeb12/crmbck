@@ -15,7 +15,9 @@ const productSchema = new mongoose.Schema({
     },
     warranty:{
         type:Boolean,
-        required:true
+        enum:['true','false'],
+        default:false
+       
     },
     brand:{
         type:String,required:true

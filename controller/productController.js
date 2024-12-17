@@ -4,8 +4,19 @@ import Product from "../models/productModels.js";
 const addProduct = async (req, res) => {
     try {
         const { name, description, price, warranty, brand } = req.body;
-        const product = new Product({ name, description, price, warranty, brand });
-        res.status(201).json(product);
+        
+        const product=new Product({
+            name,
+            description,price,
+            warranty,
+            brand
+        })
+        await product.save();
+        res.status(201).json({
+            success:true,
+            message:"Added Product",
+            product
+        });
 
 
     } catch (error) {
@@ -27,10 +38,28 @@ const getProduct = async (req, res) => {
 }
 const updateProduct = async (req, res) => {
     try {
-        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.status(200).json(product);
+       
+        const {id}=req.params;
+        const {name,description,price,warranty,brand}=req.body;
+        const productUpdate=await Product.findOne({_id:id})
+        productUpdate.name=name;
+        productUpdate.description=description;
+        productUpdate.price=price;
+        productUpdate.brand=brand;
+        productUpdate.warranty=warranty;
+        await productUpdate.save();
+        res.status(200).json(
+            {
+                success:true,
+                maessage:"updated",
+                productUpdate
+            }
+        );
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ 
+            success:false,
+            message:"Error"
+        });
     }
 }
 
@@ -39,7 +68,7 @@ const deleteProduct = async (req, res) => {
         await Product.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: 'Product deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 
 }
