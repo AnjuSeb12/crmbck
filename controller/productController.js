@@ -3,7 +3,8 @@ import Product from "../models/productModels.js";
 
 const addProduct = async (req, res) => {
     try {
-        const { name, description, price, warranty, brand } = req.body;
+        const { name, description, price, warranty, brand} = req.body;
+        
         
         const product=new Product({
             name,
@@ -27,8 +28,19 @@ const addProduct = async (req, res) => {
 
 const getProduct = async (req, res) => {
     try {
+        // const limit = parseInt(req.query.limit) 
+        // const page = parseInt(req.query.page) 
+        // const skip=(limit*page)-limit
+        // const total = await Product.countDocuments(query);
+        
         const products = await Product.find();
-        res.status(200).json(products);
+        res.status(200).json({
+            products,
+            // totalItems: total,
+            // totalPages: Math.ceil(total / limit),
+            // currentPage: page,
+           
+        });
 
 
     } catch (error) {
